@@ -4,9 +4,10 @@
 import { __ } from '@wordpress/i18n';
 import { IconButton } from '@wordpress/components';
 import {
+	NewUserTip,
 	PostPreviewButton,
-	PostSavedState,
 	PostPublishPanelToggle,
+	PostSavedState,
 } from '@wordpress/editor';
 import { withDispatch, withSelect } from '@wordpress/data';
 import { compose } from '@wordpress/element';
@@ -57,7 +58,9 @@ function Header( {
 						onClick={ toggleGeneralSidebar }
 						isToggled={ isEditorSidebarOpened }
 						aria-expanded={ isEditorSidebarOpened }
-					/>
+					>
+						<NewUserTip id="settings" />
+					</IconButton>
 					<PinnedPlugins.Slot />
 					<MoreMenu />
 				</div>

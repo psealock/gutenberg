@@ -1633,3 +1633,14 @@ export function getSupportedBlocks( state, uid, globallyEnabledBlockTypes ) {
 export function getEditorSettings( state ) {
 	return state.settings;
 }
+
+/**
+ * TODO
+ *
+ * @param {Object} state TODO
+ *
+ * @return {?number} TODO
+ */
+export function getCurrentNewUserGuideStep( state ) {
+	return state.preferences.currentNewUserGuideStep;
+}
