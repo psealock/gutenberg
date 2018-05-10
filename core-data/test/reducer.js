@@ -2,6 +2,7 @@
  * External dependencies
  */
 import deepFreeze from 'deep-freeze';
+import { filter } from 'lodash';
 
 /**
  * Internal dependencies
@@ -72,7 +73,7 @@ describe( 'entities', () => {
 	it( 'returns the default state for all defined entities', () => {
 		const state = entities( undefined, {} );
 
-		expect( state.root.postType ).toEqual( { byKey: {} } );
+		expect( state.data.root.postType ).toEqual( { byKey: {} } );
 	} );
 
 	it( 'returns with received post types by slug', () => {
@@ -84,7 +85,7 @@ describe( 'entities', () => {
 			name: 'postType',
 		} );
 
-		expect( state.root.postType ).toEqual( {
+		expect( state.data.root.postType ).toEqual( {
 			byKey: {
 				b: { slug: 'b', title: 'beach' },
 				s: { slug: 's', title: 'sun' },
@@ -115,5 +116,17 @@ describe( 'entities', () => {
 				b: { slug: 'b', title: 'beach' },
 			},
 		} );
+	} );
+
+	it( 'returns with updated entities config', () => {
+		const originalState = deepFreeze( {} );
+		const state = entities( originalState, {
+			type: 'ADD_ENTITIES',
+			entities: [ { kind: 'postType', name: 'posts' } ],
+		} );
+
+		expect( filter( state.config, { kind: 'postType' } ) ).toEqual( [
+			{ kind: 'postType', name: 'posts' },
+		] );
 	} );
 } );
