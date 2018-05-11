@@ -1,8 +1,48 @@
 .editor-new-user-tip {
-	$close-button-size: 36px;
+	$indicator-size: 8px;    // Size of the indicator dot
+	$indicator-scale: 3;     // How much the pulse animation should grow in size
+	$indicator-spacing: 5px; // Distance between the target buton and the indicator dot
+	$content-spacing: 20px;  // Distance between the indicator dot and the content
 
-	.components-popover__content {
-		padding: 5px ( $close-button-size + 5px ) 5px 10px;
+	position: fixed;
+	z-index: z-index( '.components-popover' );
+
+	&:before {
+		animation: pulse 1.6s infinite cubic-bezier( 0.17, 0.67, 0.92, 0.62 );
+		background: rgba( $blue-medium-800, 0.9 );
+		border-radius: 100%;
+		content: ' ';
+		height: $indicator-size * $indicator-scale;
+		position: absolute;
+		top: -$indicator-size - ( $indicator-size / 2 );
+		transform: scale( ( 1 / $indicator-scale ) );
+		width: $indicator-size * $indicator-scale
+	}
+		
+	&:after {
+		background: $blue-medium-800;
+		border-radius: 100%;
+		content: ' ';
+		height: $indicator-size;
+		position: absolute;
+		top: -$indicator-size / 2;
+		width: $indicator-size;
+	}
+
+	@keyframes pulse {
+		100% {
+			background: rgba( $blue-medium-800, 0 );
+			transform: scale( 1 );
+		}
+	}
+
+	.editor-new-user-tip__content {
+		background: $white;
+		border: 1px solid $light-gray-500;
+		box-shadow: $shadow-popover;
+		padding: 5px ( 36px + 5px ) 5px 10px;
+		position: absolute;
+		top: -50px;
 		width: 350px;
 	}
 
@@ -10,5 +50,33 @@
 		position: absolute;
 		right: 0;
 		top: 0;
+	}
+
+	&.is-left {
+		&:before {
+			right: -$indicator-size - ( $indicator-size / 2 ) + $indicator-spacing;
+		}
+
+		&:after {
+			right: ( -$indicator-size / 2 ) + $indicator-spacing;
+		}
+
+		.editor-new-user-tip__content {
+			right: $indicator-spacing + $content-spacing;
+		}
+	}
+
+	&.is-right {
+		&:before {
+			left: -$indicator-size - ( $indicator-size / 2 ) + $indicator-spacing;
+		}
+
+		&:after {
+			left: ( -$indicator-size / 2 ) + $indicator-spacing;
+		}
+
+		.editor-new-user-tip__content {
+			left: $indicator-spacing + $content-spacing;
+		}
 	}
 }
