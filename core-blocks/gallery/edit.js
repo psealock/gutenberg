@@ -22,7 +22,6 @@ import {
 import {
 	BlockControls,
 	BlockAlignmentToolbar,
-	BlockNotices,
 	MediaUpload,
 	ImagePlaceholder,
 	InspectorControls,
@@ -137,7 +136,7 @@ class GalleryEdit extends Component {
 
 	addFiles( files ) {
 		const currentImages = this.props.attributes.images || [];
-		const { notices, setAttributes } = this.props;
+		const { noticeOperations, setAttributes } = this.props;
 		editorMediaUpload( {
 			allowedType: 'image',
 			filesList: files,
@@ -146,7 +145,7 @@ class GalleryEdit extends Component {
 					images: currentImages.concat( images ),
 				} );
 			},
-			onError: notices.createErrorNotice,
+			onError: noticeOperations.createErrorNotice,
 		} );
 	}
 
@@ -161,7 +160,7 @@ class GalleryEdit extends Component {
 	}
 
 	render() {
-		const { attributes, isSelected, className, notices } = this.props;
+		const { attributes, isSelected, className, noticeOperations, noticeUI } = this.props;
 		const { images, columns = defaultColumnsNumber( attributes ), align, imageCrop, linkTo } = attributes;
 
 		const dropZone = (
@@ -198,13 +197,6 @@ class GalleryEdit extends Component {
 			</BlockControls>
 		);
 
-		const noticesUI = notices.noticeList.length > 0 &&
-			<BlockNotices
-				key="block-notices"
-				notices={ notices.noticeList }
-				onRemove={ notices.removeNotice }
-			/>;
-
 		if ( images.length === 0 ) {
 			return (
 				<Fragment>
@@ -215,8 +207,8 @@ class GalleryEdit extends Component {
 						label={ __( 'Gallery' ) }
 						onSelectImage={ this.onSelectImages }
 						multiple
-						notices={ noticesUI }
-						onError={ notices.createErrorNotice }
+						notices={ noticeUI }
+						onError={ noticeOperations.createErrorNotice }
 					/>
 				</Fragment>
 			);
@@ -248,7 +240,7 @@ class GalleryEdit extends Component {
 						/>
 					</PanelBody>
 				</InspectorControls>
-				{ noticesUI }
+				{ noticeUI }
 				<ul className={ `${ className } align${ align } columns-${ columns } ${ imageCrop ? 'is-cropped' : '' }` }>
 					{ dropZone }
 					{ images.map( ( img, index ) => (

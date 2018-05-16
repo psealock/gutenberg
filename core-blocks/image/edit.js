@@ -32,7 +32,6 @@ import { withSelect } from '@wordpress/data';
 import {
 	RichText,
 	BlockControls,
-	BlockNotices,
 	InspectorControls,
 	ImagePlaceholder,
 	MediaUpload,
@@ -178,15 +177,8 @@ class ImageEdit extends Component {
 	}
 
 	render() {
-		const { attributes, setAttributes, isSelected, className, maxWidth, notices, toggleSelection } = this.props;
+		const { attributes, setAttributes, isSelected, className, maxWidth, noticeOperations, noticeUI, toggleSelection } = this.props;
 		const { url, alt, caption, align, id, href, width, height } = attributes;
-
-		const noticesUI = notices.noticeList.length > 0 &&
-		<BlockNotices
-			key="block-notices"
-			notices={ notices.noticeList }
-			onRemove={ notices.removeNotice }
-		/>;
 
 		const controls = (
 			<BlockControls>
@@ -224,8 +216,8 @@ class ImageEdit extends Component {
 						className={ className }
 						icon="format-image"
 						label={ __( 'Image' ) }
-						notices={ noticesUI }
-						onError={ notices.createErrorNotice }
+						notices={ noticeUI }
+						onError={ noticeOperations.createErrorNotice }
 						onSelectImage={ this.onSelectImage }
 					/>
 				</Fragment>
@@ -320,7 +312,7 @@ class ImageEdit extends Component {
 		return (
 			<Fragment>
 				{ controls }
-				{ noticesUI }
+				{ noticeUI }
 				<figure className={ classes }>
 					<ImageSize src={ url } dirtynessTrigger={ align }>
 						{ ( sizes ) => {

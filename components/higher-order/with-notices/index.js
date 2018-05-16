@@ -9,6 +9,11 @@ import uuid from 'uuid/v4';
 import { Component, createHigherOrderComponent } from '@wordpress/element';
 
 /**
+ * Internal dependencies
+ */
+import NoticeList from '../../notice/list';
+
+/**
  * Override the default edit UI to include notices if supported.
  *
  * @param  {function|Component} OriginalComponent Original component.
@@ -22,9 +27,17 @@ export default createHigherOrderComponent( ( OriginalComponent ) => {
 			this.createNotice = this.createNotice.bind( this );
 			this.createErrorNotice = this.createErrorNotice.bind( this );
 			this.removeNotice = this.removeNotice.bind( this );
+			this.removeAllNotices = this.removeAllNotices.bind( this );
 
 			this.state = {
 				noticeList: [],
+			};
+
+			this.noticeOperations = {
+				createNotice: this.createNotice,
+				createErrorNotice: this.createErrorNotice,
+				removeAllNotices: this.removeAllNotices,
+				removeNotice: this.removeNotice,
 			};
 		}
 
@@ -70,17 +83,19 @@ export default createHigherOrderComponent( ( OriginalComponent ) => {
 		}
 
 		render() {
-			const notices = {
-				createNotice: this.createNotice,
-				createErrorNotice: this.createErrorNotice,
-				removeAllNotices: this.removeAllNotices,
-				removeNotice: this.removeNotice,
-				noticeList: this.state.noticeList,
-			};
 			return (
 				<OriginalComponent
+					noticeList={ this.state.noticeList }
+					noticeOperations={ this.noticeOperations }
+					noticeUI={
+						this.state.noticeList.length > 0 && <NoticeList
+							className="components-with-notices-ui"
+							notices={ this.state.noticeList }
+							onRemove={ this.removeNotice }
+						/>
+					}
 					{ ...this.props }
-					notices={ notices } />
+				/>
 			);
 		}
 	};

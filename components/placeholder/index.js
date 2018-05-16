@@ -21,7 +21,7 @@ function Placeholder( { icon, children, label, instructions, className, notices,
 
 	return (
 		<div { ...additionalProps } className={ classes }>
-			{ !! notices && notices }
+			{ notices }
 			<div className="components-placeholder__label">
 				{ isString( icon ) ? <Dashicon icon={ icon } /> : icon }
 				{ label }
