@@ -8,7 +8,7 @@ Gutenberg's deprecation policy is intended to support backwards-compatibility fo
  - `isPrivate: true` has been removed from the Block API. Please use `supports.inserter: false` instead.
  - `wp.utils.isExtraSmall` function removed. Please use `wp.viewport.*` instead.
 - `getInserterItems`: The `allowedBlockTypes` argument was removed and the `parentUID` argument was added.
-- `getFrecentInserterItems` selector removed. Please use `getInserterItems` instead.
+- `getFrecentInserterItems` selector removed. Please use `getInserterItems` and sort descending by [ 'utility', 'frecency' ] instead.
 - `getSupportedBlocks` selector removed. Please use `canInsertBlockType` instead.
 
 ## 3.0.0
