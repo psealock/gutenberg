@@ -127,7 +127,7 @@ describe( 'selectors', () => {
 			title: 'Test Block C',
 			icon: 'test',
 			keywords: [ 'testing' ],
-			allowedParentBlocks: [ 'core/test-block-b' ],
+			parent: [ 'core/test-block-b' ],
 		} );
 
 		cachedSelectors = filter( selectors, property( 'clear' ) );
@@ -2698,7 +2698,7 @@ describe( 'selectors', () => {
 			expect( canInsertBlockType( state, 'core/test-block-a' ) ).toBe( false );
 		} );
 
-		it( 'should deny blocks that restrict allowedParentBlocks from being inserted into the root', () => {
+		it( 'should deny blocks that restrict parent from being inserted into the root', () => {
 			const state = {
 				editor: {
 					present: {
@@ -2711,7 +2711,7 @@ describe( 'selectors', () => {
 			expect( canInsertBlockType( state, 'core/test-block-c' ) ).toBe( false );
 		} );
 
-		it( 'should deny blocks that restrict allowedParentBlocks from being inserted into a restricted parent', () => {
+		it( 'should deny blocks that restrict parent from being inserted into a restricted parent', () => {
 			const state = {
 				editor: {
 					present: {
@@ -2726,7 +2726,7 @@ describe( 'selectors', () => {
 			expect( canInsertBlockType( state, 'core/test-block-c', 'block1' ) ).toBe( false );
 		} );
 
-		it( 'should allow blocks that restrict allowedParentBlocks to be inserted into an allowed parent', () => {
+		it( 'should allow blocks that restrict parent to be inserted into an allowed parent', () => {
 			const state = {
 				editor: {
 					present: {
@@ -2779,7 +2779,7 @@ describe( 'selectors', () => {
 			expect( canInsertBlockType( state, 'core/test-block-b', 'block1' ) ).toBe( true );
 		} );
 
-		it( 'should prioritise allowedParentBlocks over allowedBlocks', () => {
+		it( 'should prioritise parent over allowedBlocks', () => {
 			const state = {
 				editor: {
 					present: {

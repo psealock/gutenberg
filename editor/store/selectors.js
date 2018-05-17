@@ -1245,7 +1245,7 @@ export const canInsertBlockType = createSelector(
 		const parentAllowedBlocks = get( parentBlockListSettings, [ 'supportedBlocks' ] );
 		const hasParentAllowedBlock = checkAllowList( parentAllowedBlocks, blockName );
 
-		const blockAllowedParentBlocks = blockType.allowedParentBlocks;
+		const blockAllowedParentBlocks = blockType.parent;
 		const parentName = getBlockName( state, parentUID );
 		const hasBlockAllowedParent = checkAllowList( blockAllowedParentBlocks, parentName );
 
@@ -1389,7 +1389,7 @@ export const getInserterItems = createSelector(
 				isDisabled = getBlocks( state ).some( ( block ) => block.name === blockType.name );
 			}
 
-			const isContextual = isArray( blockType.allowedParentBlocks );
+			const isContextual = isArray( blockType.parent );
 			const { time, count } = getInsertUsage( state, id );
 
 			return {
