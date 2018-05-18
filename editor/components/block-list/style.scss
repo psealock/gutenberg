@@ -571,7 +571,6 @@
 	// Hide both the line and button until hovered
 	opacity: 0;
 	transition: opacity 0.1s linear 0.1s;
-	transition-delay: .4s;
 
 	&:hover {
 		opacity: 1;
