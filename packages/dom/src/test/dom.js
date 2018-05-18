@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { isHorizontalEdge, placeCaretAtHorizontalEdge, isTextField } from '../dom';
+import { isHorizontalEdge, placeCaretAtHorizontalEdge, isTextField, containsNode } from '../dom';
 
 describe( 'DOM', () => {
 	let parent;
@@ -151,6 +151,51 @@ describe( 'DOM', () => {
 
 		it( 'should return true for a normal div element', () => {
 			expect( isTextField( document.createElement( 'div' ) ) ).toBe( false );
+		} );
+	} );
+
+	describe( 'contains', () => {
+		let parentNode;
+		beforeEach( () => {
+			parentNode = document.createElement( 'div' );
+		} );
+
+		it( 'it returns false when the parent doesn\'t contain the candidate element', () => {
+			const orphanElement = document.createElement( 'p' );
+			expect( containsNode( parentNode, orphanElement ) ).toBeFalsy();
+		} );
+
+		it( 'it returns false when the parent doesn\'t contain the candidate text node', () => {
+			const orphanTextNode = document.createTextNode( 'test' );
+			expect( containsNode( parentNode, orphanTextNode ) ).toBeFalsy();
+		} );
+
+		it( 'it returns true when the parent contains a candidate element as a child', () => {
+			const childElement = parentNode.appendChild(
+				document.createElement( 'p' )
+			);
+			expect( containsNode( parentNode, childElement ) ).toBeTruthy();
+		} );
+
+		it( 'it returns true when the parent contains a candidate text node as a child', () => {
+			const childTextNode = parentNode.appendChild(
+				document.createTextNode( 'test' )
+			);
+			expect( containsNode( parentNode, childTextNode ) ).toBeTruthy();
+		} );
+
+		it( 'it returns true when the parent contains an candidate element as a grandchild', () => {
+			const grandchildElement = parentNode
+				.appendChild( document.createElement( 'div' ) )
+				.appendChild( document.createElement( 'p' ) );
+			expect( containsNode( parentNode, grandchildElement ) ).toBeTruthy();
+		} );
+
+		it( 'it returns true when the parent contains a candidate text node as a grandchild', () => {
+			const grandchildTextNode = parentNode
+				.appendChild( document.createElement( 'div' ) )
+				.appendChild( document.createTextNode( 'test' ) );
+			expect( containsNode( parentNode, grandchildTextNode ) ).toBeTruthy();
 		} );
 	} );
 } );
