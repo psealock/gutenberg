@@ -17,7 +17,6 @@ const textItem = {
 	category: 'common',
 	isDisabled: false,
 	utility: 2,
-	frecency: 1,
 };
 
 const advancedTextItem = {
@@ -28,7 +27,6 @@ const advancedTextItem = {
 	category: 'common',
 	isDisabled: false,
 	utility: 2,
-	frecency: 3,
 };
 
 const someOtherItem = {
@@ -39,7 +37,6 @@ const someOtherItem = {
 	category: 'common',
 	isDisabled: false,
 	utility: 1,
-	frecency: 1,
 };
 
 const moreItem = {
@@ -50,7 +47,6 @@ const moreItem = {
 	category: 'layout',
 	isDisabled: true,
 	utility: 1,
-	frecency: 0,
 };
 
 const youtubeItem = {
@@ -62,7 +58,6 @@ const youtubeItem = {
 	keywords: [ 'google' ],
 	isDisabled: false,
 	utility: 0,
-	frecency: 0,
 };
 
 const textEmbedItem = {
@@ -73,7 +68,6 @@ const textEmbedItem = {
 	category: 'embed',
 	isDisabled: false,
 	utility: 0,
-	frecency: 0,
 };
 
 const sharedItem = {
@@ -84,7 +78,6 @@ const sharedItem = {
 	category: 'shared',
 	isDisabled: false,
 	utility: 0,
-	frecency: 0,
 };
 
 const items = [
@@ -136,7 +129,7 @@ describe( 'InserterMenu', () => {
 		expect( visibleBlocks ).toHaveLength( 0 );
 	} );
 
-	it( 'should show items in the suggested tab ordered by utility,frecency', () => {
+	it( 'should show only show high utility items in the suggested tab', () => {
 		const wrapper = mount(
 			<InserterMenu
 				position={ 'top center' }
@@ -149,8 +142,8 @@ describe( 'InserterMenu', () => {
 
 		const visibleBlocks = wrapper.find( '.editor-inserter__block' );
 		expect( visibleBlocks ).toHaveLength( 4 );
-		expect( visibleBlocks.at( 0 ).text() ).toBe( 'Advanced Text' );
-		expect( visibleBlocks.at( 1 ).text() ).toBe( 'Text' );
+		expect( visibleBlocks.at( 0 ).text() ).toBe( 'Text' );
+		expect( visibleBlocks.at( 1 ).text() ).toBe( 'Advanced Text' );
 		expect( visibleBlocks.at( 2 ).text() ).toBe( 'Some Other Block' );
 		expect( visibleBlocks.at( 3 ).text() ).toBe( 'More' );
 	} );

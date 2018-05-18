@@ -2825,18 +2825,6 @@ describe( 'selectors', () => {
 			};
 			expect( getInserterItems( state ) ).toEqual( [
 				{
-					id: 'core/test-block-a',
-					name: 'core/test-block-a',
-					initialAttributes: {},
-					title: 'Test Block A',
-					icon: 'test',
-					category: 'formatting',
-					keywords: [ 'testing' ],
-					isDisabled: false,
-					utility: 0,
-					frecency: 0,
-				},
-				{
 					id: 'core/test-block-b',
 					name: 'core/test-block-b',
 					initialAttributes: {},
@@ -2846,6 +2834,18 @@ describe( 'selectors', () => {
 					keywords: [ 'testing' ],
 					isDisabled: false,
 					utility: 1,
+					frecency: 0,
+				},
+				{
+					id: 'core/test-block-a',
+					name: 'core/test-block-a',
+					initialAttributes: {},
+					title: 'Test Block A',
+					icon: 'test',
+					category: 'formatting',
+					keywords: [ 'testing' ],
+					isDisabled: false,
+					utility: 0,
 					frecency: 0,
 				},
 				{

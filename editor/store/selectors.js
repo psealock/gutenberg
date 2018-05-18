@@ -1295,8 +1295,8 @@ function getInsertUsage( state, id ) {
  * Each item object contains what's necessary to display a button in the
  * inserter and handle its selection.
  *
- * The 'utility' property which allows us to suggest items in order of how
- * useful we think they will be to the user, namely:
+ * The 'utility' property indicates how useful we think an item will be to the
+ * user. There are 4 levels of utility:
  *
  * 1. Blocks that are contextually useful (utility = 3)
  * 2. Blocks that have been previously inserted (utility = 2)
@@ -1304,8 +1304,9 @@ function getInsertUsage( state, id ) {
  * 4. All other blocks (utility = 0)
  *
  * The 'frecency' property is a herustic (https://en.wikipedia.org/wiki/Frecency)
- * that combines block usage frequenty and recency. This is useful for ordering
- * items within the above categories.
+ * that combines block usage frequenty and recency.
+ *
+ * Items are returned ordered descendingly by their 'utility' and 'frecency'.
  *
  * @param {Object} state     Global application state.
  * @param {?string} parentUID The block we are inserting into, if any.
@@ -1323,8 +1324,7 @@ function getInsertUsage( state, id ) {
  * @property {boolean}  isDisabled        Whether or not the user should be prevented from inserting
  *                                        this item.
  * @property {number}   utility           How useful we think this item is, between 0 and 3.
- * @property {number}   frecency          Hueristic that combines recency and frecency. Useful for
- *                                        ordering items by relevancy.
+ * @property {number}   frecency          Hueristic that combines recency and frecency.
  */
 export const getInserterItems = createSelector(
 	( state, parentUID = null ) => {
@@ -1460,7 +1460,11 @@ export const getInserterItems = createSelector(
 			.filter( shouldIncludeSharedBlock )
 			.map( buildSharedBlockInserterItem );
 
-		return [ ...blockTypeInserterItems, ...sharedBlockInserterItems ];
+		return orderBy(
+			[ ...blockTypeInserterItems, ...sharedBlockInserterItems ],
+			[ 'utility', 'frecency' ],
+			[ 'desc', 'desc' ]
+		);
 	},
 	( state, editorAllowedBlockTypes, parentUID ) => [
 		state.blockListSettings[ parentUID ],

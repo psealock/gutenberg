@@ -8,7 +8,6 @@ import {
 	groupBy,
 	includes,
 	isEmpty,
-	orderBy,
 	pick,
 	some,
 	sortBy,
@@ -65,6 +64,7 @@ export class InserterMenu extends Component {
 		this.searchItems = this.searchItems.bind( this );
 		this.getItemsForTab = this.getItemsForTab.bind( this );
 		this.sortItems = this.sortItems.bind( this );
+		this.getVisibleItems = this.getVisibleItems.bind( this );
 		this.selectItem = this.selectItem.bind( this );
 
 		this.tabScrollTop = { suggested: 0, blocks: 0, embeds: 0 };
@@ -147,20 +147,8 @@ export class InserterMenu extends Component {
 
 	sortItems( items ) {
 		if ( 'suggested' === this.state.tab && ! this.state.filterValue ) {
-			/**
-			 * Sort items in the following order:
-			 *
-			 * 1. Blocks that are contextually useful (utility = 3)
-			 * 2. Blocks that have been previously inserted (utility = 2)
-			 * 3. Blocks that are in the common category (utility = 1)
-			 * 4. All other blocks (utility = 0)
-			 *
-			 * @see selectors.getInserterItems()
-			 */
-			const sortedItems = orderBy( items, [ 'utility', 'frecency' ], [ 'desc', 'desc' ] );
-
 			const maxSuggestedItems = this.props.maxSuggestedItems || MAX_SUGGESTED_ITEMS;
-			return sortedItems.slice( 0, maxSuggestedItems );
+			return items.slice( 0, maxSuggestedItems );
 		}
 
 		const getCategoryIndex = ( item ) => {
@@ -183,8 +171,7 @@ export class InserterMenu extends Component {
 
 	getVisibleItemsByCategory( items ) {
 		return flow(
-			this.searchItems,
-			this.sortItems,
+			this.getVisibleItems,
 			this.groupByCategory
 		)( items );
 	}

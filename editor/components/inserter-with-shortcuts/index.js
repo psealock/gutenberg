@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { reject, isEmpty, orderBy, flow } from 'lodash';
+import { filter, isEmpty } from 'lodash';
 
 /**
  * WordPress dependencies
@@ -18,40 +18,18 @@ import { withDispatch, withSelect } from '@wordpress/data';
 import BlockIcon from '../block-icon';
 import './style.scss';
 
-function filterItems( items ) {
-	return reject( items, ( item ) =>
-		item.name === getDefaultBlockName() && isEmpty( item.initialAttributes )
-	);
-}
-
-function orderItems( items ) {
-	/**
-	 * Sort items in the following order:
-	 *
-	 * 1. Blocks that are contextually useful (utility = 3)
-	 * 2. Blocks that have been previously inserted (utility = 2)
-	 * 3. Blocks that are in the common category (utility = 1)
-	 * 4. All other blocks (utility = 0)
-	 *
-	 * @see selectors.getInserterItems()
-	 */
-	return orderBy( items, [ 'utility', 'frecency' ], [ 'desc', 'desc' ] );
-}
-
-function limitItems( items ) {
-	return items.slice( 0, 3 );
-}
-
 function InserterWithShortcuts( { items, isLocked, onInsert } ) {
 	if ( isLocked ) {
 		return null;
 	}
 
-	const bestItems = flow( filterItems, orderItems, limitItems )( items );
+	const itemsWithoutDefaultBlock = filter( items, ( item ) =>
+		item.name !== getDefaultBlockName() || ! isEmpty( item.initialAttributes )
+	).slice( 0, 3 );
 
 	return (
 		<div className="editor-inserter-with-shortcuts">
-			{ bestItems.map( ( item ) => (
+			{ itemsWithoutDefaultBlock.map( ( item ) => (
 				<IconButton
 					key={ item.id }
 					className="editor-inserter-with-shortcuts__block"
