@@ -1,19 +1,23 @@
 .editor-new-user-tip {
-	$indicator-size: 8px;    // Size of the indicator dot
-	$indicator-scale: 3;     // How much the pulse animation should grow in size
-	$indicator-spacing: 5px; // Distance between the target buton and the indicator dot
-	$content-spacing: 20px;  // Distance between the indicator dot and the content
+	$indicator-size: 8px;     // Size of the indicator dot
+	$indicator-scale: 3;      // How much the pulse animation should scale up by in size
+	$indicator-spacing: -5px; // Distance between edge of the buton and the indicator dot
+	$content-spacing: 20px;   // Distance between indicator dot and the content
 
 	position: fixed;
 	z-index: z-index( '.components-popover' );
 
+	&:before, &:after {
+		border-radius: 100%;
+		content: ' ';
+		pointer-events: none;
+		position: absolute;
+	}
+
 	&:before {
 		animation: pulse 1.6s infinite cubic-bezier( 0.17, 0.67, 0.92, 0.62 );
 		background: rgba( $blue-medium-800, 0.9 );
-		border-radius: 100%;
-		content: ' ';
 		height: $indicator-size * $indicator-scale;
-		position: absolute;
 		top: -$indicator-size - ( $indicator-size / 2 );
 		transform: scale( ( 1 / $indicator-scale ) );
 		width: $indicator-size * $indicator-scale
@@ -21,10 +25,7 @@
 		
 	&:after {
 		background: $blue-medium-800;
-		border-radius: 100%;
-		content: ' ';
 		height: $indicator-size;
-		position: absolute;
 		top: -$indicator-size / 2;
 		width: $indicator-size;
 	}
@@ -40,10 +41,11 @@
 		background: $white;
 		border: 1px solid $light-gray-500;
 		box-shadow: $shadow-popover;
+		left: 0;
+		margin-top: 20px;
 		padding: 5px ( 36px + 5px ) 5px 10px;
-		position: absolute;
-		top: -50px;
-		width: 350px;
+		position: fixed;
+		right: 0;
 	}
 
 	.editor-new-user-tip__close {
@@ -60,10 +62,6 @@
 		&:after {
 			right: ( -$indicator-size / 2 ) + $indicator-spacing;
 		}
-
-		.editor-new-user-tip__content {
-			right: $indicator-spacing + $content-spacing;
-		}
 	}
 
 	&.is-right {
@@ -74,9 +72,28 @@
 		&:after {
 			left: ( -$indicator-size / 2 ) + $indicator-spacing;
 		}
+	}
 
+	@include break-mobile {
 		.editor-new-user-tip__content {
-			left: $indicator-spacing + $content-spacing;
+			left: auto;
+			margin-top: auto;
+			position: absolute;
+			right: auto;
+			top: -50px;
+			width: 350px;
+		}
+
+		&.is-left {
+			.editor-new-user-tip__content {
+				right: $indicator-spacing + $content-spacing;
+			}
+		}
+
+		&.is-right {
+			.editor-new-user-tip__content {
+				left: $indicator-spacing + $content-spacing;
+			}
 		}
 	}
 }
