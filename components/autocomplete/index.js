@@ -8,6 +8,7 @@ import { escapeRegExp, find, filter, map, debounce } from 'lodash';
  * WordPress dependencies
  */
 import { Component, compose, renderToString } from '@wordpress/element';
+import { containsNode } from '@wordpress/dom';
 import { keycodes } from '@wordpress/utils';
 import { __, _n, sprintf } from '@wordpress/i18n';
 
@@ -288,7 +289,7 @@ export class Autocomplete extends Component {
 		const selection = window.getSelection();
 		if ( selection.isCollapsed ) {
 			if ( 'production' !== process.env.NODE_ENV ) {
-				if ( ! container.contains( selection.anchorNode ) ) {
+				if ( ! containsNode( container, selection.anchorNode ) ) {
 					throw new Error( 'Invalid assumption: expected selection to be within the autocomplete container' );
 				}
 			}
