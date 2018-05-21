@@ -144,7 +144,8 @@ const effects = {
 						store.dispatch( openGeneralSidebar( sidebarToReOpenOnExpand ) );
 					}
 				};
-			} )()
+			} )(),
+			true
 		) );
 	},
 
