@@ -3,6 +3,18 @@
  */
 import { get } from 'lodash';
 
+// Defaults to the local storage.
+let persistenceStorage = window.localStorage;
+
+/**
+ * Sets a different persistence storage.
+ *
+ * @param {Object} storage Persistence storage.
+ */
+export function setPersistenceStorage( storage ) {
+	persistenceStorage = storage;
+}
+
 /**
  * Adds the rehydratation behavior to redux reducers.
  *
@@ -42,7 +54,7 @@ export function withRehydratation( reducer, reducerKey, storageKey ) {
  */
 export function loadAndPersist( store, reducer, reducerKey, storageKey ) {
 	// Load initially persisted value
-	const persistedString = window.localStorage.getItem( storageKey );
+	const persistedString = persistenceStorage.getItem( storageKey );
 	if ( persistedString ) {
 		const persistedState = {
 			...get( reducer( undefined, { type: '@@gutenberg/init' } ), reducerKey ),
@@ -63,7 +75,7 @@ export function loadAndPersist( store, reducer, reducerKey, storageKey ) {
 		if ( newStateValue !== currentStateValue ) {
 			currentStateValue = newStateValue;
 			const stateToSave = get( reducer( store.getState(), { type: 'SERIALIZE' } ), reducerKey );
-			window.localStorage.setItem( storageKey, JSON.stringify( stateToSave ) );
+			persistenceStorage.setItem( storageKey, JSON.stringify( stateToSave ) );
 		}
 	} );
 }
