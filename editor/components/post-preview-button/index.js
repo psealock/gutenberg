@@ -8,13 +8,9 @@ import { get } from 'lodash';
  */
 import { Component, compose } from '@wordpress/element';
 import { Button, ifCondition } from '@wordpress/components';
-import { _x } from '@wordpress/i18n';
+import { __, _x } from '@wordpress/i18n';
 import { withSelect, withDispatch } from '@wordpress/data';
-
-/**
- * Internal dependencies
- */
-import NewUserTip from '../new-user-tip';
+import { GuideTip } from '@wordpress/nux';
 
 export class PostPreviewButton extends Component {
 	constructor() {
@@ -112,7 +108,11 @@ export class PostPreviewButton extends Component {
 				disabled={ ! isSaveable }
 			>
 				{ _x( 'Preview', 'imperative verb' ) }
-				{ isSaveable && <NewUserTip id="preview" /> }
+				{ isSaveable && (
+					<GuideTip guideID="core/editor" step={ 3 }>
+						{ __( 'Click ‘Preview’ to load a preview of this page, so you can make sure you’re happy with your blocks.' ) }
+					</GuideTip>
+				) }
 			</Button>
 		);
 	}

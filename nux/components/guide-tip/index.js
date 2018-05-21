@@ -11,28 +11,9 @@ import { withSelect, withDispatch } from '@wordpress/data';
  */
 import './style.scss';
 
-const TIPS = {
-	inserter: {
-		step: 1,
-		text: __( 'Welcome to the wonderful world of blocks! Click ‘Add block’ to insert different kinds of content—text, images, quotes, video, lists, and much more.' ),
-	},
-	settings: {
-		step: 2,
-		text: __( 'You’ll find more settings for your page and blocks in the sidebar. Click ‘Settings’ to open it.' ),
-	},
-	preview: {
-		step: 3,
-		text: __( 'Click ‘Preview’ to load a preview of this page, so you can make sure you’re happy with your blocks.' ),
-	},
-	publish: {
-		step: 4,
-		text: __( 'Finished writing? That’s great, let’s get this published right now. Just click ‘Publish’ and you’re good to go.' ),
-	},
-};
+const { Slot, Fill } = createSlotFill( 'GuideTip' );
 
-const { Slot, Fill } = createSlotFill( 'NewUserTip' );
-
-class NewUserTip extends Component {
+class GuideTip extends Component {
 	constructor() {
 		super( ...arguments );
 
@@ -82,10 +63,8 @@ class NewUserTip extends Component {
 	}
 
 	render() {
-		const { id, currentStep, onAdvance, onDismiss } = this.props;
+		const { step, children, currentStep, onAdvance, onDismiss } = this.props;
 		const { direction, position } = this.state;
-
-		const { step, text } = TIPS[ id ];
 
 		if ( currentStep !== step ) {
 			return null;
@@ -102,7 +81,7 @@ class NewUserTip extends Component {
 						aria-label={ __( 'New User Guide' ) }
 					>
 						<div className="editor-new-user-tip__content">
-							<p>{ text }</p>
+							<p>{ children }</p>
 							<p>
 								<Button
 									ref={ this.advanceButtonRef }
@@ -127,29 +106,29 @@ class NewUserTip extends Component {
 	}
 }
 
-const EnhancedNewUserTip = compose(
-	withSelect( ( select ) => {
-		const { getCurrentNewUserGuideStep } = select( 'core/editor' );
+const EnhancedGuideTip = compose(
+	withSelect( ( select, { guideID } ) => {
+		const { getCurrentGuideStep } = select( 'core/nux' );
 		return {
-			currentStep: getCurrentNewUserGuideStep(),
+			currentStep: getCurrentGuideStep( guideID ),
 		};
 	} ),
-	withDispatch( ( dispatch ) => {
-		const { advanceNewUserGuide, dismissNewUserGuide } = dispatch( 'core/editor' );
+	withDispatch( ( dispatch, { guideID } ) => {
+		const { advanceGuide, dismissGuide } = dispatch( 'core/nux' );
 		return {
 			onAdvance() {
-				advanceNewUserGuide();
+				advanceGuide( guideID );
 			},
 			onDismiss() {
-				dismissNewUserGuide();
+				dismissGuide( guideID );
 			},
 		};
 	} ),
 	withGlobalEvents( {
 		resize: 'setPosition',
 	} ),
-)( NewUserTip );
+)( GuideTip );
 
-EnhancedNewUserTip.Slot = Slot;
+EnhancedGuideTip.Slot = Slot;
 
-export default EnhancedNewUserTip;
+export default EnhancedGuideTip;

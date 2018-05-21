@@ -1585,7 +1585,6 @@ describe( 'state', () => {
 
 			expect( state ).toEqual( {
 				insertUsage: {},
-				currentNewUserGuideStep: 1,
 			} );
 		} );
 

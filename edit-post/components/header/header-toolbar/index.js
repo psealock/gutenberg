@@ -4,20 +4,20 @@
 import { compose } from '@wordpress/element';
 import { withSelect } from '@wordpress/data';
 import { withViewportMatch } from '@wordpress/viewport';
+import { GuideTip } from '@wordpress/nux';
 
 /**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
 import {
+	Inserter,
 	BlockToolbar,
+	TableOfContents,
 	EditorHistoryRedo,
 	EditorHistoryUndo,
-	Inserter,
 	MultiBlocksSwitcher,
 	NavigableToolbar,
-	NewUserTip,
-	TableOfContents,
 } from '@wordpress/editor';
 
 /**
@@ -31,10 +31,11 @@ function HeaderToolbar( { hasFixedToolbar, isLargeViewport } ) {
 			className="edit-post-header-toolbar"
 			aria-label={ __( 'Editor Toolbar' ) }
 		>
-			<span>
-				<Inserter position="bottom right" />
-				<NewUserTip id="inserter" />
-			</span>
+			<Inserter position="bottom right">
+				<GuideTip guideID="core/editor" step={ 1 }>
+					{ __( 'Welcome to the wonderful world of blocks! Click ‘Add block’ to insert different kinds of content—text, images, quotes, video, lists, and much more.' ) }
+				</GuideTip>
+			</Inserter>
 			<EditorHistoryUndo />
 			<EditorHistoryRedo />
 			<TableOfContents />

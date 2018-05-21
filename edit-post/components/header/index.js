@@ -4,13 +4,13 @@
 import { __ } from '@wordpress/i18n';
 import { IconButton } from '@wordpress/components';
 import {
-	NewUserTip,
 	PostPreviewButton,
-	PostPublishPanelToggle,
 	PostSavedState,
+	PostPublishPanelToggle,
 } from '@wordpress/editor';
 import { withDispatch, withSelect } from '@wordpress/data';
 import { compose } from '@wordpress/element';
+import { GuideTip } from '@wordpress/nux';
 
 /**
  * Internal dependencies
@@ -59,7 +59,9 @@ function Header( {
 						isToggled={ isEditorSidebarOpened }
 						aria-expanded={ isEditorSidebarOpened }
 					>
-						<NewUserTip id="settings" />
+						<GuideTip guideID="core/editor" step={ 2 }>
+							{ __( 'You’ll find more settings for your page and blocks in the sidebar. Click ‘Settings’ to open it.' ) }
+						</GuideTip>
 					</IconButton>
 					<PinnedPlugins.Slot />
 					<MoreMenu />
