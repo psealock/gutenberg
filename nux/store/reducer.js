@@ -8,7 +8,7 @@ import { get } from 'lodash';
  */
 import { combineReducers } from '@wordpress/data';
 
-function currentGuideStep( state = {}, action ) {
+export function currentGuideStep( state = {}, action ) {
 	switch ( action.type ) {
 		case 'ADVANCE_GUIDE': {
 			const { id } = action;

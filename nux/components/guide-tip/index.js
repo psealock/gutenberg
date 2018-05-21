@@ -13,7 +13,7 @@ import './style.scss';
 
 const { Slot, Fill } = createSlotFill( 'GuideTip' );
 
-class GuideTip extends Component {
+export class GuideTip extends Component {
 	constructor() {
 		super( ...arguments );
 
