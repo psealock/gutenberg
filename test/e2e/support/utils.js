@@ -65,7 +65,20 @@ export async function newPost( postType ) {
 
 export async function newDesktopBrowserPage() {
 	global.page = await browser.newPage();
+	await setDesktopViewPort();
+}
+
+export async function newMobileBrowserPage() {
+	global.page = await browser.newPage();
+	await setMobileViewPort();
+}
+
+export async function setDesktopViewPort() {
 	await page.setViewport( { width: 1000, height: 700 } );
+}
+
+export async function setMobileViewPort() {
+	await page.setViewport( { width: 500, height: 700 } );
 }
 
 export async function switchToEditor( mode ) {
@@ -79,6 +92,13 @@ export async function getHTMLFromCodeEditor() {
 	const textEditorContent = await page.$eval( '.editor-post-text-editor', ( element ) => element.value );
 	await switchToEditor( 'Visual' );
 	return textEditorContent;
+}
+
+export async function clearLocalStorage() {
+	await page.$eval( 'body', ( body ) => {
+		const doc = body.ownerDocument;
+		doc.defaultView.localStorage.clear();
+	} );
 }
 
 /**
