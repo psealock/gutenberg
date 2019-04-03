@@ -163,9 +163,10 @@ class Popover extends Component {
 	}
 
 	focus() {
-		const { focusOnMount } = this.props;
+		const { focusOnMount, onMount } = this.props;
 
 		if ( ! focusOnMount || ! this.contentNode.current ) {
+			onMount( this.contentNode.current );
 			return;
 		}
 
@@ -180,6 +181,7 @@ class Popover extends Component {
 				this.contentNode.current.focus();
 			}
 
+			onMount( this.contentNode.current );
 			return;
 		}
 
@@ -187,6 +189,7 @@ class Popover extends Component {
 			// Focus the popover panel itself so items in the popover are easily
 			// accessed via keyboard navigation.
 			this.contentNode.current.focus();
+			onMount( this.contentNode.current );
 		}
 	}
 
@@ -379,6 +382,7 @@ class Popover extends Component {
 
 Popover.defaultProps = {
 	focusOnMount: 'firstElement',
+	onMount: () => {},
 	noArrow: false,
 };
 
