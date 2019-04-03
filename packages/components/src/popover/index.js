@@ -81,6 +81,8 @@ class Popover extends Component {
 		this.focusTimeout = setTimeout( () => {
 			this.focus();
 		}, 0 );
+
+		this.props.onMount( this.contentNode.current );
 	}
 
 	componentDidUpdate( prevProps ) {
@@ -163,10 +165,9 @@ class Popover extends Component {
 	}
 
 	focus() {
-		const { focusOnMount, onMount } = this.props;
+		const { focusOnMount } = this.props;
 
 		if ( ! focusOnMount || ! this.contentNode.current ) {
-			onMount( this.contentNode.current );
 			return;
 		}
 
@@ -181,7 +182,6 @@ class Popover extends Component {
 				this.contentNode.current.focus();
 			}
 
-			onMount( this.contentNode.current );
 			return;
 		}
 
@@ -189,7 +189,6 @@ class Popover extends Component {
 			// Focus the popover panel itself so items in the popover are easily
 			// accessed via keyboard navigation.
 			this.contentNode.current.focus();
-			onMount( this.contentNode.current );
 		}
 	}
 
